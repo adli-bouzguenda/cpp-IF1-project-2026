@@ -1,6 +1,7 @@
 #pragma once
 #include "Option.h"
 #include "BinaryTree.h"
+#include <cmath>   // exp, sqrt, log... also available to the files that include this header
 
 /*
    Prices an option with the Cox-Ross-Rubinstein (binomial) model.

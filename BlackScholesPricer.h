@@ -1,6 +1,7 @@
 #pragma once
 #include "EuropeanVanillaOption.h"
 #include "EuropeanDigitalOption.h"
+#include <cmath>   // exp, sqrt, log... also available to the files that include this header
 
 /*
    Prices a European option with the Black-Scholes closed-form formulas.
