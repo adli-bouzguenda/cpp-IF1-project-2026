@@ -120,6 +120,10 @@ double CRRPricer::operator()(bool closed_form)
 		return _tree.getNode(0, 0);
 	}
 
+	// The closed form only works without early exercise
+	if (_option->isAmericanOption())
+		throw std::invalid_argument("No closed-form formula for an American option, use the tree");
+
 	double q = riskNeutralProbability();
 	double sum = 0.0;
 
