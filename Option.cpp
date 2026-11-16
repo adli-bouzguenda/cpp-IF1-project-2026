@@ -20,3 +20,12 @@ bool Option::isAsianOption()
 {
 	return false;
 }
+
+
+//says if the option is american
+//input : nothing
+//output : false, american option overrides it
+bool Option::isAmericanOption()
+{
+	return false;
+}

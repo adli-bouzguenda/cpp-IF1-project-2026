@@ -25,6 +25,20 @@ CRRPricer::CRRPricer(Option* option, int depth, double asset_price, double up, d
 		throw std::invalid_argument("Arbitrage opportunity: the model needs D < R < U");
 
 	_tree.setDepth(depth);
+	_exercise.setDepth(depth); //same size as the price tree
+}
+
+
+//builds the pricer as an approx of black scholes
+//input : option, depth n, asset_price s0, r the continuous rate, volatility sigma
+//output : nothing
+//h is t divided by n, then u d and r are computed and the first constructor is called
+CRRPricer::CRRPricer(Option* option, int depth, double asset_price, double r, double volatility)
+	: CRRPricer(option, depth, asset_price,
+		std::exp((r + volatility * volatility / 2) * (option->getExpiry() / depth) + volatility * std::sqrt(option->getExpiry() / depth)) - 1,
+		std::exp((r + volatility * volatility / 2) * (option->getExpiry() / depth) - volatility * std::sqrt(option->getExpiry() / depth)) - 1,
+		std::exp(r * (option->getExpiry() / depth)) - 1)
+{
 }
 
 double CRRPricer::stockPrice(int n, int i)
@@ -51,6 +65,13 @@ void CRRPricer::compute()
 	// 1) Payoffs at expiry
 	for (int i = 0; i <= _depth; i++)
 		_tree.setNode(_depth, i, _option->payoff(stockPrice(_depth, i)));
+	//at expiry nothing is left after, so the american option is exercised
+	if (_option->isAmericanOption())
+	{
+		//mark every node of the last level
+		for (int i=0; i<=_depth; i++)
+			_exercise.setNode(_depth, i, true);
+	}
 
 	// 2) Going back in time, step by step
 	for (int n = _depth - 1; n >= 0; n--)
@@ -59,6 +80,15 @@ void CRRPricer::compute()
 		{
 			double value = (q * _tree.getNode(n + 1, i + 1) + (1 - q) * _tree.getNode(n + 1, i))
 				/ (1 + _interest_rate);
+			//american option: compare continuation value and intrinsic value
+			if (_option->isAmericanOption())
+			{
+				double intrinsic=_option->payoff(stockPrice(n, i)); //value if exercised now
+				_exercise.setNode(n, i, intrinsic>=value);
+				//exercise is better so the price is the intrinsic value
+				if (intrinsic>=value)
+					value=intrinsic;
+			}
 			_tree.setNode(n, i, value);
 		}
 	}
@@ -100,4 +130,17 @@ double CRRPricer::operator()(bool closed_form)
 		sum += std::exp(log_weight) * _option->payoff(stockPrice(_depth, i));
 	}
 	return sum / std::pow(1 + _interest_rate, _depth);
+}
+
+
+//exercise policy at step n and node i
+//input : n the step, i the node
+//output : true if the option should be exercised there
+//compute is called first if the tree is not filled
+bool CRRPricer::getExercise(int n, int i)
+{
+	//fill the trees if it was not done
+	if (!_computed)
+		compute();
+	return _exercise.getNode(n, i);
 }

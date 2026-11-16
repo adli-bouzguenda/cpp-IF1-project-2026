@@ -32,6 +32,8 @@ public:
     // Returns false by default and will be overridden in AsianOption.
     virtual bool isAsianOption();
 
+    virtual bool isAmericanOption(); //false by default, true in american option
+
 protected:
     // protected (asked by the teacher): the derived classes can read _expiry directly
     double _expiry;   // expiry date T

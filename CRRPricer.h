@@ -14,6 +14,8 @@ public:
 	// depth = N, asset_price = S0, up = U, down = D, interest_rate = R
 	CRRPricer(Option* option, int depth, double asset_price, double up, double down, double interest_rate);
 
+	CRRPricer(Option* option, int depth, double asset_price, double r, double volatility); //u d and r from black scholes params
+
 	// Fills the whole tree H(n, i) by backward induction (CRR procedure)
 	void compute();
 
@@ -23,6 +25,8 @@ public:
 	// Price of the option today H(0, 0).
 	// closed_form = true uses the closed-form formula instead of the tree.
 	double operator()(bool closed_form = false);
+
+	bool getExercise(int n, int i); //true if the american option is exercised at (n, i)
 
 private:
 	Option* _option;
@@ -34,6 +38,7 @@ private:
 
 	BinaryTree<double> _tree;   // stores H(n, i)
 	bool _computed;             // true once compute() has filled the tree
+	BinaryTree<bool> _exercise; //exercise policy of the american option
 
 	// S(n, i) = S0 * (1 + U)^i * (1 + D)^(n - i)
 	double stockPrice(int n, int i);
