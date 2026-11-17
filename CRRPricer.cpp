@@ -65,7 +65,7 @@ void CRRPricer::compute()
 	// 1) Payoffs at expiry
 	for (int i = 0; i <= _depth; i++)
 		_tree.setNode(_depth, i, _option->payoff(stockPrice(_depth, i)));
-	//at expiry nothing is left after, so the american option is exercised
+	//at expiry the value is the intrinsic value, so the condition intrinsic>=value is true
 	if (_option->isAmericanOption())
 	{
 		//mark every node of the last level
@@ -84,7 +84,7 @@ void CRRPricer::compute()
 			if (_option->isAmericanOption())
 			{
 				double intrinsic=_option->payoff(stockPrice(n, i)); //value if exercised now
-				_exercise.setNode(n, i, intrinsic>=value);
+				_exercise.setNode(n, i, intrinsic>=value); //rule of the subject, intrinsic larger or equal to continuation
 				//exercise is better so the price is the intrinsic value
 				if (intrinsic>=value)
 					value=intrinsic;
