@@ -15,6 +15,8 @@ public:
     static double rand_norm();
 private:
     MT();
+    MT(const MT&)=delete; //no copy of the singleton
+    MT& operator=(const MT&)=delete; //no copy either
     // Returns the unique instance of the random generator
     static MT& instance();
     // Mersenne Twister random number generator
