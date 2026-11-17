@@ -20,15 +20,12 @@ private:
 	double _current_estimate; //mean of the discounted payoffs
 	double _sum_squares; //sum of the squared discounted payoffs, for the interval
 
-	/*
-	   Bonus: American options with Monte Carlo (Longstaff-Schwartz).
-	   The American option can be exercised at any time, it is approximated
-	   by an option that can be exercised at AMERICAN_EXERCISE_DATES dates
-	   equally spaced between 0 and T (a Bermudan option).
-	*/
-	static const int AMERICAN_EXERCISE_DATES = 50;
-
-	//simulates nb_paths paths and returns the discounted payoff of each one,
-	//using the Longstaff-Schwartz exercise rule
-	std::vector<double> americanDiscountedPayoffs(int nb_paths);
+	//bonus american option with the longstaff schwartz method
+	static const int _nb_exercise_dates=50; //the american option is approx by 50 exercise dates
+	static const int _nb_pilot_paths=100000; //paths used only once to compute the regression
+	bool _pilot_done; //true when the regression coefs are known
+	bool _exercise_now; //true if exercising at time 0 is better
+	std::vector<std::vector<double>> _coefs; //3 coefs for each date, empty if no exercise at this date
+	void compute_pilot(); //regression on the pilot paths, done one time
+	double american_discounted_payoff(); //simulates one path with the exercise rule
 };
