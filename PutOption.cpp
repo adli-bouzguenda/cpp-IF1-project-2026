@@ -3,7 +3,7 @@
 PutOption::PutOption(double expiry, double strike)
 	: EuropeanVanillaOption(expiry, strike) {
 }
-
+//Computes the payoff of a european put option
 double PutOption::payoff(double z)
 {
 	double K = getStrike();
@@ -12,6 +12,7 @@ double PutOption::payoff(double z)
 	return 0.0;         // not exercised
 }
 
+// Returns the option type (put)
 EuropeanVanillaOption::optionType PutOption::GetOptionType()
 {
 	return optionType::put;
