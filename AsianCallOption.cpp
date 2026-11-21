@@ -5,6 +5,7 @@
 AsianCallOption::AsianCallOption(const std::vector<double>& time_steps, double strike)
     : AsianOption(time_steps)
 {
+    // check if strike is negative
     if (strike < 0)
         throw std::invalid_argument("Strike must be nonnegative");
     _strike = strike;
