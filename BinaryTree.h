@@ -27,8 +27,8 @@ public:
 	*/
 	void setDepth(int depth)
 	{
-		if (depth < 0)
-			throw std::invalid_argument("Depth must be nonnegative");
+		if (depth < 0) // Check if depth is negative
+			throw std::invalid_argument("Depth must be nonnegative"); 
 		_depth = depth;
 		_tree.resize(_depth + 1);
 		for (int n = 0; n <= _depth; n++)
