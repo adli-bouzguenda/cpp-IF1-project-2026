@@ -1,21 +1,10 @@
 #include "AmericanPutOption.h"
 
-
-//builds the american put
-//input : expiry the expiry date, strike the strike k
-//output : nothing
-AmericanPutOption::AmericanPutOption(double expiry, double strike) : AmericanOption(expiry, strike)
+AmericanPutOption::AmericanPutOption() : AmericanOption("Milkshake a emporter", 5.5, 2)
 {
 }
 
-
-//payoff if the put is exercised
-//input : z price of the underlying
-//output : k minus z if k is above z, else 0
-double AmericanPutOption::payoff(double z)
+std::string AmericanPutOption::describe()
 {
-	//gain only when the strike is above z
-	if (getStrike()>=z)
-		return getStrike() - z;
-	return 0.0;
+	return "Milkshake taille " + std::to_string(getSize()) + "XL. On peut l'exercer a tout moment : il est deja a moitie bu.";
 }

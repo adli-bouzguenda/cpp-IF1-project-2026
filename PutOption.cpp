@@ -1,19 +1,15 @@
 #include "PutOption.h"
 
-PutOption::PutOption(double expiry, double strike)
-	: EuropeanVanillaOption(expiry, strike) {
-}
-//Computes the payoff of a european put option
-double PutOption::payoff(double z)
+PutOption::PutOption(int scoops) : EuropeanVanillaOption("Glace 'Put'", 3.0, scoops)
 {
-	double K = getStrike();
-	if (K >= z)
-		return K - z;   // the holder sells at K something worth z
-	return 0.0;         // not exercised
 }
 
-// Returns the option type (put)
-EuropeanVanillaOption::optionType PutOption::GetOptionType()
+std::string PutOption::describe()
 {
-	return optionType::put;
+	return "Le serveur pose la glace. Elle tombe. Strike ! Prix d'exercice : 0 euro.";
+}
+
+int PutOption::calories()
+{
+	return 0; // elle est par terre, donc ca ne compte pas
 }

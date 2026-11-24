@@ -1,16 +1,11 @@
 #include "EuropeanDigitalOption.h"
-#include <stdexcept>
 
-EuropeanDigitalOption::EuropeanDigitalOption(double expiry, double strike)
-	: Option(expiry), _strike(strike)
+EuropeanDigitalOption::EuropeanDigitalOption(const std::string& name, double price) : Option(name, price), _clicks(0)
 {
-	if (expiry < 0)
-		throw std::invalid_argument("Expiry must be nonnegative");
-	if (strike < 0)
-		throw std::invalid_argument("Strike must be nonnegative");
 }
 
-double EuropeanDigitalOption::getStrike()
+bool EuropeanDigitalOption::screenWorks()
 {
-	return _strike;
+	_clicks++;
+	return _clicks % 3 == 0; // la borne marche une fois sur trois, comme toutes les bornes
 }

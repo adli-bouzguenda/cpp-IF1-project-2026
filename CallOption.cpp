@@ -1,18 +1,10 @@
 #include "CallOption.h"
 
-CallOption::CallOption(double expiry, double strike)
-	: EuropeanVanillaOption(expiry, strike) {
+CallOption::CallOption(int scoops) : EuropeanVanillaOption("Glace 'Call'", 3.5, scoops)
+{
 }
 
-double CallOption::payoff(double z)
+std::string CallOption::describe()
 {
-	double K = getStrike();
-	if (z >= K)
-		return z - K;   // the holder buys at K something worth z
-	return 0.0;         // not exercised
-}
-
-EuropeanVanillaOption::optionType CallOption::GetOptionType()
-{
-	return optionType::call;
+	return "Vous appelez le serveur. Il ne vient pas. Vous rappelez. Il arrive avec " + std::to_string(getScoops()) + " boule(s) de vanille.";
 }

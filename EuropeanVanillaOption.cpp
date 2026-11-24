@@ -1,18 +1,15 @@
 #include "EuropeanVanillaOption.h"
-#include <stdexcept>
 
-// ": Option(expiry)" calls the base class constructor, which stores the expiry.
-// Then we check the arguments before keeping the strike.
-EuropeanVanillaOption::EuropeanVanillaOption(double expiry, double strike)
-	: Option(expiry), _strike(strike)
+EuropeanVanillaOption::EuropeanVanillaOption(const std::string& name, double price, int scoops) : Option(name, price), _scoops(scoops)
 {
-	if (expiry < 0)
-		throw std::invalid_argument("Expiry must be nonnegative");
-	if (strike < 0)
-		throw std::invalid_argument("Strike must be nonnegative");
 }
 
-double EuropeanVanillaOption::getStrike()
+int EuropeanVanillaOption::getScoops()
 {
-	return _strike;
+	return _scoops;
+}
+
+int EuropeanVanillaOption::calories()
+{
+	return 140 * _scoops; // chaque boule compte, meme la derniere
 }

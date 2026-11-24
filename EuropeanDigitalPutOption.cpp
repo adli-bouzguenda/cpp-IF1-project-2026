@@ -1,16 +1,10 @@
 #include "EuropeanDigitalPutOption.h"
 
-EuropeanDigitalPutOption::EuropeanDigitalPutOption(double expiry, double strike)
-	: EuropeanDigitalOption(expiry, strike) {}
-
-double EuropeanDigitalPutOption::payoff(double z)
+EuropeanDigitalPutOption::EuropeanDigitalPutOption() : EuropeanDigitalOption("Annulation sur borne", 0.0)
 {
-	if (z <= getStrike())
-		return 1.0;
-	return 0.0;
 }
 
-EuropeanDigitalOption::optionType EuropeanDigitalPutOption::GetOptionType()
+std::string EuropeanDigitalPutOption::describe()
 {
-	return optionType::put;
+	return "Vous essayez d'annuler. La borne affiche : 'Erreur 404 : bouton annuler introuvable'.";
 }

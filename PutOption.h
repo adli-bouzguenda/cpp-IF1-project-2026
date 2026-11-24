@@ -1,16 +1,11 @@
 #pragma once
 #include "EuropeanVanillaOption.h"
 
-// European put: the right to sell the underlying at the strike K at expiry
+// PutOption : la glace qu'on pose (put) sur la table... ou par terre
 class PutOption : public EuropeanVanillaOption
 {
 public:
-	// Only passes the values to the EuropeanVanillaOption constructor
-	PutOption(double expiry, double strike);
-
-	// h(z) = K - z if K >= z, 0 otherwise
-	double payoff(double z) override;
-
-	// Returns optionType::put
-	optionType GetOptionType() override;
+	PutOption(int scoops);
+	std::string describe() override;
+	int calories() override;
 };

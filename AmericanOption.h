@@ -1,17 +1,16 @@
 #pragma once
 #include "Option.h"
 
+// AmericanOption : tout ce qui peut etre mange AVANT la date d'expiration
 class AmericanOption : public Option
 {
 public:
-	AmericanOption(double expiry, double strike); //expiry and strike k
-	bool isAmericanOption() override; //always true here
+	AmericanOption(const std::string& name, double price, int size_xl);
+	int calories() override;
 
-//protected so that we can use it in a derived class
 protected:
-	double getStrike(); //for the call and the put, not public
+	int getSize();
 
-//private to block the class from a derived class and an outside class
 private:
-	double _strike; //strike k
+	int _size;
 };
