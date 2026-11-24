@@ -1,28 +1,25 @@
 #include "MT.h"
+using namespace std;
+// Constructor: initializes the random generator
+MT::MT() {
+    random_device rd;
+    _gen.seed(rd());
+}
+// Returns the unique instance of MT
+MT& MT::instance() {
+    static MT mt_instance;
+    return mt_instance;
+}
+// Generates a random number uniformly distributed between 0 and 1
+double MT::rand_unif() {
+    std::uniform_real_distribution<double> dist(0, 1);
 
-MT::MT() : _state(2026)
-{
+    return dist(instance()._gen);
 }
 
-MT& MT::instance()
-{
-	static MT machine;
-	return machine;
-}
+// Generates a random number following a standard normal distribution
+double MT::rand_norm() {
+    std::normal_distribution<double> dist(0.0, 1.0);
 
-unsigned int MT::next()
-{
-	_state = _state * 1103515245u + 12345u; // generateur fait maison, approuve par personne
-	return (_state / 65536u) % 32768u;
-}
-
-std::string MT::dessert_du_jour()
-{
-	const std::string desserts[] = {"tiramisu", "tiramisu", "tiramisu", "tiramisu (encore)", "machine en panne, revenez demain"};
-	return desserts[instance().next() % 5];
-}
-
-int MT::humeur_du_chef()
-{
-	return static_cast<int>(instance().next() % 11); // sur 10, mais parfois 0
+    return dist(instance()._gen);
 }

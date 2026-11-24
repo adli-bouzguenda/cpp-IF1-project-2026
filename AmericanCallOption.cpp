@@ -1,10 +1,22 @@
 #include "AmericanCallOption.h"
 
-AmericanCallOption::AmericanCallOption() : AmericanOption("Crepe burger triple cheddar", 12.9, 3)
+
+//builds the american call
+//input : expiry and strike
+//output : nothing
+AmericanCallOption::AmericanCallOption(double expiry, double strike) : AmericanOption(expiry, strike)
 {
 }
 
-std::string AmericanCallOption::describe()
+
+//payoff if the call is exercised
+//input : z the price of the underlying
+//output : z minus k if z is above k, 0 if not
+//same payoff as the european call
+double AmericanCallOption::payoff(double z)
 {
-	return "Crepe burger taille " + std::to_string(getSize()) + "XL. Exercice anticipe recommande : mangez-la avant qu'elle refroidisse.";
+	//gain only when z is above the strike
+	if (z>=getStrike())
+		return z - getStrike();
+	return 0.0;
 }

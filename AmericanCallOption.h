@@ -4,6 +4,6 @@
 class AmericanCallOption : public AmericanOption
 {
 public:
-	AmericanCallOption();
-	std::string describe() override;
+	AmericanCallOption(double expiry, double strike); //uses the american option constructor
+	double payoff(double z) override; //z minus k if positive, else 0
 };

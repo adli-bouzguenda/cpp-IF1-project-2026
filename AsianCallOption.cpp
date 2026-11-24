@@ -1,13 +1,24 @@
 #include "AsianCallOption.h"
+#include <stdexcept>
 
-AsianCallOption::AsianCallOption() : AsianOption("Plateau maki-crepe", {"maki nutella", "maki banane", "maki caramel beurre sale"})
+// Constructor
+AsianCallOption::AsianCallOption(const std::vector<double>& time_steps, double strike)
+    : AsianOption(time_steps)
 {
+    if (strike < 0)
+        throw std::invalid_argument("Strike must be nonnegative");
+    _strike = strike;
 }
 
-std::string AsianCallOption::describe()
+// payoff of an Asian Call option
+double AsianCallOption::payoff(double spot)
 {
-	std::string text = "Plateau fusion : ";
-	for (const std::string& piece : getPieces())
-		text += piece + ", ";
-	return text + "le chef ne s'excusera pas.";
+    double payoff_value = 0;
+    // The payoff is positive only if the average price is superior to the strike
+    if (spot > _strike)
+    {
+        payoff_value = spot - _strike;
+    }
+    // Returns the payoff 
+    return payoff_value;
 }

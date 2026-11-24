@@ -1,13 +1,16 @@
 #include "EuropeanDigitalCallOption.h"
 
-EuropeanDigitalCallOption::EuropeanDigitalCallOption() : EuropeanDigitalOption("Crepe commandee sur borne", 1.0)
+EuropeanDigitalCallOption::EuropeanDigitalCallOption(double expiry, double strike)
+	: EuropeanDigitalOption(expiry, strike) {}
+
+double EuropeanDigitalCallOption::payoff(double z)
 {
+	if (z >= getStrike())
+		return 1.0;
+	return 0.0;
 }
 
-std::string EuropeanDigitalCallOption::describe()
+EuropeanDigitalOption::optionType EuropeanDigitalCallOption::GetOptionType()
 {
-	int tries = 1;
-	while (!screenWorks())
-		tries++;
-	return "Commande validee apres " + std::to_string(tries) + " essais. Payoff : 1 crepe, ou 0. C'est digital.";
+	return optionType::call;
 }

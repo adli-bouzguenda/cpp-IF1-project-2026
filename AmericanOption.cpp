@@ -1,15 +1,28 @@
 #include "AmericanOption.h"
 
-AmericanOption::AmericanOption(const std::string& name, double price, int size_xl) : Option(name, price), _size(size_xl)
+
+//builds the american option
+//input : expiry the date n, strike the strike k
+//output : nothing
+AmericanOption::AmericanOption(double expiry, double strike) : Option(expiry), _strike(strike)
 {
 }
 
-int AmericanOption::calories()
+
+//says that the option is american
+//input : nothing
+//output : true
+//used by crr pricer to know if early exercise is possible
+bool AmericanOption::isAmericanOption()
 {
-	return 900 * _size; // taille americaine
+	return true;
 }
 
-int AmericanOption::getSize()
+
+//gives the strike to the derived classes
+//input : nothing
+//output : the strike k
+double AmericanOption::getStrike()
 {
-	return _size;
+	return _strike;
 }

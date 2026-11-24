@@ -1,20 +1,31 @@
 #include "Option.h"
+#include <stdexcept>
 
-Option::Option(const std::string& name, double price_euros) : _name(name), _price(price_euros)
+Option::Option(double expiry) : _expiry(expiry) {}
+
+double Option::getExpiry()
 {
+	return _expiry;
 }
 
-std::string Option::getName()
+double Option::payoffPath(const std::vector<double>& path)
 {
-	return _name;
+	if (path.empty())
+		throw std::invalid_argument("Price path cannot be empty");
+	return payoff(path.back());   // European option: only the last price matters
 }
 
-double Option::getPrice()
+// returns false for all non-asian options
+bool Option::isAsianOption()
 {
-	return _price;
+	return false;
 }
 
-int Option::calories()
+
+//says if the option is american
+//input : nothing
+//output : false, american option overrides it
+bool Option::isAmericanOption()
 {
-	return 250; // valeur moyenne d'une crepe, source : mamie
+	return false;
 }

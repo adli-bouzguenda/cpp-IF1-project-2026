@@ -1,9 +1,19 @@
 #pragma once
 #include "AsianOption.h"
-
-class AsianCallOption : public AsianOption
-{
+/*
+   For an asian call option, the payoff
+   depends on the average asset price
+   and the strike price.
+*/
+class AsianCallOption : public AsianOption {
 public:
-	AsianCallOption();
-	std::string describe() override;
+    // Constructor: initializes the observation dates and strike price
+    AsianCallOption(const std::vector<double>& time_steps, double strike);
+
+    // Computes the payoff of the Asian Call option
+    double payoff(double spot) override;
+
+private:
+    // Strike price of the option
+    double _strike;
 };
